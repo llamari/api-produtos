@@ -36,7 +36,7 @@ public class FornecedorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Fornecedor> updateFornecedor(
-        @PathVariable Long id, @ResquestBody Fornecedor fornecedorDetails
+        @PathVariable Long id, @RequestBody Fornecedor fornecedorDetails
     ){
         return fornecedorRepository.findById(id)
             .map(fornecedor -> {

@@ -1,7 +1,5 @@
 package com.exemplo.api_produtos.model;
 
-import java.util.Set;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -15,7 +13,7 @@ public class Estoque {
     private Integer quantidade;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "produto_id", nullable = false)
+    @JoinColumn(name = "produto_id", nullable = true)
     private Produto produto;
 
     public Estoque() {}

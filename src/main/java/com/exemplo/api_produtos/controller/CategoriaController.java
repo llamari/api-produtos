@@ -40,11 +40,11 @@ public class CategoriaController {
     public ResponseEntity<Categoria> updateCategoria(
         @PathVariable Long id, @RequestBody Categoria categoriaDetails
     ) {
-        return categoriaRepository.findby(id)
+        return categoriaRepository.findById(id)
             .map(categoria -> {
                 categoria.setNome(categoriaDetails.getNome());
                 Categoria updatedCategoria = categoriaRepository.save(categoria);
-                return ResponseEntity.ok(updatedCategoria)
+                return ResponseEntity.ok(updatedCategoria);
             })
             .orElse(ResponseEntity.notFound().build());
     }
