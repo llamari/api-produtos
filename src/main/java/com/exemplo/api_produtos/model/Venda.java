@@ -21,13 +21,8 @@ public class Venda {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    @ManyToMany
-    @JoinTable(
-        name = "tb_produto_venda",
-        joinColumns = @JoinColumn(name = "produto_id"),
-        inverseJoinColumns = @JoinColumn(name = "venda_id")        
-    )
-    private Set<Produto> produtos;
+    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    private Set<ProdutoVenda> produtosVendidos;
 
     public Venda() {}
 
@@ -45,6 +40,6 @@ public class Venda {
     public void setCliente(Cliente cliente) { this.cliente = cliente;}
     public Date getData () {return data; }
     public void setData (Date data){ this.data = data; }
-    public Set<Produto> getProdutos () {return produtos; }
-    public void setProdutos (Set<Produto> produtos ) {this.produtos = produtos; }
+    public Set<ProdutoVenda> getProdutosVendidos () {return produtosVendidos; }
+    public void setProdutosVendidos (Set<ProdutoVenda> produtosVendidos ) {this.produtosVendidos = produtosVendidos; }
 }

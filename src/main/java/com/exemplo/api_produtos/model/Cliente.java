@@ -15,7 +15,7 @@ public class Cliente {
 
     private String email;
 
-    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Venda> vendas;
 
     public Cliente(){}

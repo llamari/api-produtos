@@ -31,8 +31,8 @@ public class Produto {
     )
     private Set<Fornecedor> fornecedores;
 
-    @ManyToMany(mappedBy = "vendas")
-    private Set<Venda> vendas;
+    @OneToMany(mappedBy = "produto")
+    private Set<ProdutoVenda> vendas;
 
     public Produto(){}
 
@@ -56,6 +56,6 @@ public class Produto {
     public void setCategoria(Categoria categoria) { this.categoria = categoria;}
     public Set<Fornecedor> getFornecedores() {return fornecedores; }
     public void setFornecedores (Set<Fornecedor> fornecedores) { this.fornecedores = fornecedores;}
-    public Set<Venda> getVendas() {return vendas; }
-    public void setVendas (Set<Venda> vendas) { this.vendas = vendas;}
+    public Set<ProdutoVenda> getVendas() {return vendas; }
+    public void setVendas (Set<ProdutoVenda> vendas) { this.vendas = vendas;}
 }
