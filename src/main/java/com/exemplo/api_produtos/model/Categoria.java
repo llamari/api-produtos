@@ -3,6 +3,10 @@ package com.exemplo.api_produtos.model;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "tb_categorias")
 public class Categoria {
@@ -14,6 +18,7 @@ public class Categoria {
     private String nome;
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Produto> produtos;
 
     public Categoria(){}

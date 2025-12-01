@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "tb_fornecedores")
 public class Fornecedor {
@@ -15,6 +19,7 @@ public class Fornecedor {
     private String nome;
 
     @ManyToMany(mappedBy = "fornecedores")
+    @JsonIgnore
     private Set<Produto> produtos;
 
     public Fornecedor() {}

@@ -2,8 +2,12 @@ package com.exemplo.api_produtos.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "tb_produto_venda")
 public class ProdutoVenda {
@@ -14,10 +18,12 @@ public class ProdutoVenda {
 
     @ManyToOne
     @JoinColumn(name = "produto_id", nullable = false)
+    @JsonIgnore
     private Produto produto;
 
     @ManyToOne
     @JoinColumn(name = "venda_id", nullable = false)
+    @JsonIgnore
     private Venda venda;
 
     private Integer quantidade;

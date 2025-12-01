@@ -1,7 +1,11 @@
 package com.exemplo.api_produtos.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "tb_estoques")
 public class Estoque {
@@ -14,6 +18,7 @@ public class Estoque {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id", nullable = true)
+    @JsonIgnore
     private Produto produto;
 
     public Estoque() {}
