@@ -7,8 +7,10 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import com.exemplo.api_produtos.model.Estoque;
+import com.exemplo.api_produtos.model.Produto;
 import com.exemplo.api_produtos.model.ProdutoVenda;
 import com.exemplo.api_produtos.model.Venda;
+import com.exemplo.api_produtos.repository.ProdutoRepository;
 import com.exemplo.api_produtos.repository.VendaRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class VendaController {
     private final VendaRepository vendaRepository;
+    private final ProdutoRepository produtoRepository;
 
     @GetMapping
     public List<Venda> getAllVendas() {
@@ -34,26 +37,40 @@ public class VendaController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Venda createVenda(@RequestBody Venda venda) {
+
         BigDecimal total = BigDecimal.ZERO;
 
         for (ProdutoVenda produtoVenda : venda.getProdutosVendidos()) {
-            produtoVenda.setVenda(venda);
 
-            Estoque estoque = produtoVenda.getProduto().getEstoque();
+            // Pegamos o produto REAL do banco:
+            Produto produto = produtoRepository
+                    .findById(produtoVenda.getProduto().getId())
+                    .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+            Estoque estoque = produto.getEstoque();
+
             if (estoque.getQuantidade() < produtoVenda.getQuantidade()) {
-                throw new IllegalArgumentException(
-                        "Estoque insuficiente para o produto: " + produtoVenda.getProduto().getNome());
-            }
+            throw new IllegalArgumentException(
+                "Estoque insuficiente para o produto: " + produtoVenda.getProduto().getNome()
+            );
+        }
 
+            // Atualiza estoque
             estoque.setQuantidade(estoque.getQuantidade() - produtoVenda.getQuantidade());
 
+            // Conecta a relação corretamente
+            produtoVenda.setProduto(produto);
+            produtoVenda.setVenda(venda);
+
+            // Calcula subtotal
             total = total.add(
-                    produtoVenda.getPrecoUnitario().multiply(
+                    produto.getPreco().multiply(
                             BigDecimal.valueOf(produtoVenda.getQuantidade())));
         }
 
         venda.setPreco(total);
-        return vendaRepository.save(venda);
+
+        return vendaRepository.save(venda); // Cascade automaticamente salva ProdutoVenda
     }
 
     @PutMapping("/{id}")

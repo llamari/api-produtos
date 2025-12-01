@@ -26,9 +26,10 @@ public class Venda {
 
     public Venda() {}
 
-    public Venda(Cliente cliente, BigDecimal preco){
+    public Venda(Cliente cliente, BigDecimal preco, Set<ProdutoVenda> produtosVendidos) {
         this.cliente = cliente;
         this.preco = preco;
+        this.produtosVendidos = produtosVendidos;
         this.data = new Date();
     }
 
